@@ -2,9 +2,9 @@
 
 # Flux
 
-Claude Code の開発ワークフローを加速するプラグイン集
+Claude Code のプラグインマーケットプレイス
 
-## 利用可能なプラグイン
+## プラグイン
 
 ### [DevFlow](devflow/README.ja.md)
 
@@ -31,7 +31,7 @@ DevFlow: どのアーキテクチャにしますか？
 ### 1. マーケットプレイスを追加
 
 ```
-/plugin marketplace add takuya-motoshima/flux
+/plugin marketplace add shumatsumonobu/flux
 ```
 
 ### 2. プラグインをインストール
@@ -66,4 +66,4 @@ MIT
 
 ## 作者
 
-Takuya Motoshima ([@takuya-motoshima](https://github.com/takuya-motoshima))
+shumatsumonobu ([@shumatsumonobu](https://github.com/shumatsumonobu))

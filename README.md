@@ -2,13 +2,13 @@
 
 # Flux
 
-A plugin collection that accelerates your Claude Code development workflow.
+A plugin marketplace for Claude Code.
 
-## Available Plugins
+## Plugins
 
 ### [DevFlow](devflow/README.md)
 
-Just say what you want to build. 6 specialized agents handle the full cycle — codebase exploration, design, implementation, testing, review, and documentation — automatically.
+Just say what you want to build. 6 specialized agents handle the full development cycle — exploration, design, implementation, testing, review, and documentation — automatically.
 
 ```
 You:     /devflow:dev
@@ -31,7 +31,7 @@ You:     (clicks Option 2)
 ### 1. Add marketplace
 
 ```
-/plugin marketplace add takuya-motoshima/flux
+/plugin marketplace add shumatsumonobu/flux
 ```
 
 ### 2. Install plugin
@@ -66,4 +66,4 @@ MIT
 
 ## Author
 
-Takuya Motoshima ([@takuya-motoshima](https://github.com/takuya-motoshima))
+shumatsumonobu ([@shumatsumonobu](https://github.com/shumatsumonobu))

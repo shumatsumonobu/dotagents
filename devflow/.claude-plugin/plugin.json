@@ -3,11 +3,11 @@
   "version": "2.0.0",
   "description": "PM-driven development workflow with 6 specialized agents (explorer, planner, coder, tester, reviewer, documenter). Supports TypeScript/Python/Go/Rust.",
   "author": {
-    "name": "Takuya Motoshima",
-    "url": "https://github.com/takuya-motoshima"
+    "name": "shumatsumonobu",
+    "url": "https://github.com/shumatsumonobu"
   },
-  "homepage": "https://github.com/takuya-motoshima/flux",
-  "repository": "https://github.com/takuya-motoshima/flux",
+  "homepage": "https://github.com/shumatsumonobu/flux",
+  "repository": "https://github.com/shumatsumonobu/flux",
   "license": "MIT",
   "keywords": [
     "agents",

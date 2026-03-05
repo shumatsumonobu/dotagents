@@ -54,7 +54,7 @@ DevFlow: 爆速モードで進めます。
 [Claude Code](https://claude.com/claude-code) >= 1.0.0 が必要です。
 
 ```
-/plugin marketplace add takuya-motoshima/flux
+/plugin marketplace add shumatsumonobu/flux
 /plugin install devflow@flux
 ```
 
@@ -424,4 +424,4 @@ MIT
 
 ## 著者
 
-Takuya Motoshima ([@takuya-motoshima](https://github.com/takuya-motoshima)) / [X](https://x.com/takuya_motech)
+shumatsumonobu ([@shumatsumonobu](https://github.com/shumatsumonobu)) / [X](https://x.com/shumatsumonobu)

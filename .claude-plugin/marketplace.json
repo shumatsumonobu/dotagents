@@ -1,8 +1,8 @@
 {
   "name": "flux",
   "owner": {
-    "name": "Takuya Motoshima",
-    "email": "mail@takuya-motoshima.com"
+    "name": "shumatsumonobu",
+    "email": "shumatsumonobu@gmail.com"
   },
   "metadata": {
     "description": "Collection of Claude Code plugins for enhanced development workflows"
@@ -14,7 +14,14 @@
       "description": "PM-driven development workflow with 6 specialized agents (explorer, planner, coder, tester, reviewer, documenter)",
       "version": "2.0.0",
       "category": "development",
-      "tags": ["agents", "workflow", "automation", "multi-language", "testing", "review"]
+      "tags": [
+        "agents",
+        "workflow",
+        "automation",
+        "multi-language",
+        "testing",
+        "review"
+      ]
     }
   ]
 }

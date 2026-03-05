@@ -6,7 +6,7 @@
 
 **Flux** は Claude Code プラグインのマーケットプレイスリポジトリ。現在 **DevFlow** プラグイン（v2.0.0）を収録している。
 
-- リポジトリ: `takuya-motoshima/flux`
+- リポジトリ: `shumatsumonobu/flux`
 - DevFlow: 6つの専門エージェント（explorer, planner, coder, tester, reviewer, documenter）による PM 駆動の9フェーズ開発ワークフロー
 - 詳細: [devflow/DEVELOPMENT.md](devflow/DEVELOPMENT.md)
 
@@ -73,7 +73,7 @@ claude --plugin-dir /path/to/flux/devflow
 - `devflow/DEVELOPMENT.md` の GitHub URL
 - `README.md` / `README.ja.md` のインストール手順（`/plugin marketplace add <owner>/flux`）
 - `.claude-plugin/marketplace.json` の `owner`
-- 各所の `takuya-motoshima` 参照
+- 各所の `shumatsumonobu` 参照
 
 ### 4. 掲載状況（参考）
 

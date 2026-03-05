@@ -54,7 +54,7 @@ One instruction, and the entire development cycle runs automatically.
 [Claude Code](https://claude.com/claude-code) >= 1.0.0 required.
 
 ```
-/plugin marketplace add takuya-motoshima/flux
+/plugin marketplace add shumatsumonobu/flux
 /plugin install devflow@flux
 ```
 
@@ -424,4 +424,4 @@ MIT
 
 ## Author
 
-Takuya Motoshima ([@takuya-motoshima](https://github.com/takuya-motoshima)) / [X](https://x.com/takuya_motech)
+shumatsumonobu ([@shumatsumonobu](https://github.com/shumatsumonobu)) / [X](https://x.com/shumatsumonobu)
