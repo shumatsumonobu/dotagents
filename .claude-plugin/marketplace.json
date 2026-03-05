@@ -11,8 +11,8 @@
     {
       "name": "devflow",
       "source": "./devflow",
-      "description": "PM-like hearing and automated dev workflow with 5 specialized agents",
-      "version": "1.0.0",
+      "description": "PM-driven development workflow with 6 specialized agents (explorer, planner, coder, tester, reviewer, documenter)",
+      "version": "2.0.0",
       "category": "development",
       "tags": ["agents", "workflow", "automation", "multi-language", "testing", "review"]
     }

@@ -1,7 +1,7 @@
 {
   "name": "devflow",
-  "version": "1.0.0",
-  "description": "PM-like hearing and automated dev workflow with 5 specialized agents. Supports TypeScript/Python/Go/Rust.",
+  "version": "2.0.0",
+  "description": "PM-driven development workflow with 6 specialized agents (explorer, planner, coder, tester, reviewer, documenter). Supports TypeScript/Python/Go/Rust.",
   "author": {
     "name": "Takuya Motoshima",
     "url": "https://github.com/takuya-motoshima"
@@ -19,6 +19,7 @@
     "multi-language"
   ],
   "agents": [
+    "./agents/explorer.md",
     "./agents/planner.md",
     "./agents/coder.md",
     "./agents/tester.md",
@@ -27,6 +28,8 @@
   ],
   "commands": [
     "./commands/dev.md",
+    "./commands/explore.md",
+    "./commands/history.md",
     "./commands/design.md",
     "./commands/review.md",
     "./commands/test.md",

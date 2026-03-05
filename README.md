@@ -8,19 +8,23 @@ A plugin collection that accelerates your Claude Code development workflow.
 
 ### [DevFlow](devflow/README.md)
 
-Just say what you want to build. 5 specialized agents handle the full cycle — requirements hearing, design, implementation, testing, review, and documentation — automatically.
+Just say what you want to build. 6 specialized agents handle the full cycle — codebase exploration, design, implementation, testing, review, and documentation — automatically.
 
 ```
 You:     /devflow:dev
-         "I want to build a chat app using Gemini API"
+         "Add a chat feature using Gemini API"
 
 DevFlow: Web UI or CLI? Save conversation history?
 You:     Web UI. Session-only is fine.
 
-→ Automatically runs design → code → test → review → docs
+DevFlow: Which architecture?
+         [Option 1: Minimal]  [Option 2: Clean]  [Option 3: Balanced]
+You:     (clicks Option 2)
+
+-> Automatically runs explore -> design -> code -> test -> review -> docs
 ```
 
-**Features**: Conversational requirements, multi-language (TS/JS, Python, Go, Rust), parallel execution, development modes, auto-fix loop, security checks, memory
+**Features**: Conversational requirements, codebase exploration, architecture candidates, multi-language (TS/JS, Python, Go, Rust), parallel execution, development modes, auto-fix loop, confidence scoring, session history, security checks, memory
 
 ## Installation
 

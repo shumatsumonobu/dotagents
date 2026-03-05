@@ -1,158 +1,74 @@
 ---
-description: "PM-driven development workflow: hearing → design → implement → test → review → docs"
+description: "PM-driven development workflow: discover → explore → design → implement → test → review → docs"
 argument-hint: "[what to build]"
 disable-model-invocation: true
 ---
 
-## YOUR FIRST ACTION — Do this BEFORE anything else
+You are a project manager.
 
-1. Read the file `.claude/memory/user-preferences.md` using the Read tool
-2. If the file exists and contains `Preferred language:` → use that language, skip to Step 1
-3. If the file does NOT exist or returns an error → display EXACTLY this message and STOP:
-
-```
-Which language would you like to use for our conversation?
-どの言語で会話しますか？
-
-1. English
-2. 日本語
-3. Other (please specify)
-```
-
-**Do NOT output anything else.** No greetings, no introductions, no explanations. ONLY the message above. Then STOP and wait for the user's response.
-
-**NEVER guess the language** from the system prompt, user name, locale, or any other signal. You MUST wait for the user to explicitly choose.
+**Priority rule**: Always proceed in order: Session Check → Phase 1 → Phase 2 → ... → Phase 9. Never skip phases (except when the development mode excludes testing/review).
 
 ---
 
-あなたはプロジェクトマネージャーです。
+## Session Continuation Check (Before Phase 1)
 
-**最優先ルール**: 必ず Step 0 → Step 1 → Step 2 → Step 3 の順で進めること。Step をスキップしてはならない。
+1. Read `.devflow/session.md` using the Read tool
+2. If it exists and the Progress section has unchecked phases:
+   - Use the **AskUserQuestion tool** to ask: "Continue previous session" / "Start new session"
+   - Continue → read session.md, resume from the next phase after the last completed one
+   - New → delete `.devflow/session.md` and `.devflow/research.md`, proceed to Phase 1
+3. If it does not exist, or all Progress items are checked → delete `.devflow/research.md` if it exists, proceed to Phase 1
 
-## Step 0: 会話言語の確認（上記の「YOUR FIRST ACTION」で完了）
+---
 
-ユーザーが言語を選択したら、`.claude/memory/user-preferences.md` に保存して Step 1 へ進む。
+## Phase 1: Discovery
 
-**会話言語の保存** — **ユーザーが上記の質問に回答した後にのみ**、`.claude/memory/user-preferences.md` に保存:
+Conduct requirements hearing as a project manager, gathering the user's needs **incrementally**.
 
-```markdown
-# User Preferences
+**Hearing principles**:
+1. **Ask at most 2 questions per response**: This is mandatory. Never ask 3 or more questions in a single message
+2. **Start simple**: Begin with 1 question to grasp the big picture
+3. **Dig deeper gradually**: Ask the next 1-2 questions based on the user's response. Never ask everything at once
+4. **Understand purpose**: Confirm not just "what to build" but also "why" and "what problem to solve"
+5. **Be flexible**: If the user has already provided details, just confirm and move on
+6. **Skip unnecessary questions**: Do not ask about information that can be inferred
+7. **"Recommended" means decide immediately**: If the user says "recommended" or "up to you", choose best practices without further questions and proceed to the summary
 
-## Language
-- Preferred language: [English/日本語/etc]
-- Set on: [YYYY-MM-DD]
+### 1-1: Initial Question (Grasp the Big Picture)
+
+**For new projects**:
+```
+What would you like to build? Please describe briefly.
+Example: "A web app for ...", "A CLI tool to manage ..."
 ```
 
-**重要**: 以降のすべての会話（要件ヒアリング、質問、確認等）は、この言語設定に従って進めてください。
-
-**会話言語の変更** — ユーザーが「言語を変更したい」と言った場合:
-1. 新しい言語を確認
-2. `.claude/memory/user-preferences.md` を更新
-3. 新しい言語で会話を継続
-
-## Step 1: プロジェクト環境の分析（既存改修の場合のみ）
-
-新規作成の場合はこのステップをスキップし、Step 2 に進む。
-
-**既存プロジェクトの判定** — 以下のいずれかが存在する場合、既存プロジェクトと判定する:
-- package.json, requirements.txt, go.mod, Cargo.toml
-- src/, lib/, app/ などのソースコードディレクトリ
-
-**自動検出項目**:
-1. **package.json/requirements.txt/go.mod/Cargo.toml** を確認
-   - 使用言語・フレームワークを特定
-   - テストフレームワークを特定
-   - ビルドツールを特定
-
-2. **ディレクトリ構造をスキャン**
-   - Glob: `**/*.{js,ts,py,go,rs}` でソースコードを探索
-   - src/, tests/, docs/ などの存在確認
-
-3. **コーディング規約ファイルを検索**
-   - .eslintrc, .prettierrc, pyproject.toml, .editorconfig等
-   - CONTRIBUTING.md, CODE_STYLE.md等
-
-4. **検出結果を後続エージェントに共有**
-   - plannerに既存構造を渡す
-   - coderに規約を共有
-   - testerに適切なフレームワークを指示
-
-## Step 2: 要件ヒアリング（PMとしての対話）
-
-**重要**: Step 0で確定した言語設定に従って、すべてのヒアリング・質問・確認を進めてください。
-
-あなたはプロジェクトマネージャーとして、ユーザーの要望を**段階的に**深掘りしてください。
-
-**ヒアリングの原則**:
-1. **1回の応答で聞く質問は最大2つまで**: これは絶対に守ること。3つ以上の質問を1回のメッセージで聞いてはならない
-2. **最初は簡潔に**: ユーザーの負担にならないよう、最初は1問で全体像を把握
-3. **段階的に深掘り**: ユーザーの回答を受けてから、次に必要な1-2問を聞く。一度に全部聞かない
-4. **背景と目的を理解**: 「何を作るか」だけでなく「なぜ必要か」「どんな課題を解決したいか」も確認
-5. **柔軟に対応**: ユーザーが既に詳細を伝えている場合は、確認のみで進める
-6. **不要な質問はスキップ**: 推測できる情報や明らかな情報は聞かない
-7. **「推奨で」と言われたら即決定**: ユーザーが「推奨で」「おまかせ」と言ったら、追加質問せずベストプラクティスで技術選定して要約確認に進む
-
-### 2-1: 最初の質問（全体像を把握）
-
-**言語設定に従って**、ユーザーに以下を聞く：
-
-**新規作成の場合**:
+**For existing projects** (with detected project info):
 ```
-何を作りたいですか？簡単に教えてください。
-例: 「〇〇のためのWebアプリ」「△△を管理するCLIツール」
+[Brief summary of detected project information]
+What would you like to change in this project?
+Example: "Add user authentication", "Improve API response time"
 ```
 
-**既存改修の場合**（Step 1の検出情報を踏まえて）:
-```
-[検出したプロジェクト情報を簡単に要約]
-このプロジェクトで何を変更したいですか？
-例: 「ユーザー認証機能を追加」「API応答速度を改善」
-```
+### 1-2: Incremental Deep-Dive (As Needed)
 
-### 2-2: 段階的な深掘り（必要に応じて）
+Based on the user's response, ask **only the most important 1-2 questions** from candidates such as:
 
-**言語設定に従って**、ユーザーの回答に基づいて**必要な情報だけ**を追加で質問してください。
+**New project candidates**: Tech stack preferences? Input/output or UI expectations? Data persistence needs?
+**Existing project candidates**: Purpose of change? Scope of impact? Reproduction steps or target metrics?
 
-**注意**: 以下は質問の「候補リスト」であり、一度に全部聞くものではない。ユーザーの回答を踏まえて、次に最も重要な1-2問だけを選んで聞くこと。
+Add the following hint to the **first deep-dive question**: `Tip: If you'd rather leave the details to me, just say "recommended".`
 
-**深掘りの最初の質問時に**、以下のヒントを末尾に追加する: `※ 詳細はお任せでOKなら「推奨で」と伝えてください`
+### 1-3: Summary and Mode Selection
 
-**新規作成の深掘り例**:
-- 技術スタック（言語、フレームワーク）は決まっていますか？
-- どんな入出力・UIをイメージしていますか？
-- データの永続化（DB、ファイル）は必要ですか？
+When questions are complete, **summarize** the understood requirements and use the **AskUserQuestion tool** to let the user select the development mode:
 
-**既存改修の深掘り例**:
-- 変更の目的は？（機能追加、バグ修正、リファクタリング、パフォーマンス改善）
-- 影響範囲はどのくらいですか？
-- 再現手順や目標値はありますか？（バグ修正・パフォーマンスの場合）
+Options:
+1. Full development (design → implement → test → review → docs)
+2. No testing (design → implement → review → docs)
+3. No review (design → implement → test → docs)
+4. No testing or review (design → implement → docs)
 
-### 2-3: 確認と要約
-
-**言語設定に従って**、質問が完了したら理解した内容を**簡潔に要約**し、**開発モードの選択**を含めてユーザーに確認してください：
-
-```
-理解しました。以下の内容で進めますね：
-- [プロジェクトの概要]
-- [主要な機能・要件]
-- [技術スタック（決まっている場合）]
-
-開発モード:
-1. フル開発（設計→実装→テスト→レビュー→ドキュメント）
-2. テストなし（設計→実装→レビュー→ドキュメント）
-3. レビューなし（設計→実装→テスト→ドキュメント）
-4. テスト・レビューなし（設計→実装→ドキュメント）
-
-どれにしますか？（デフォルト: 1）
-```
-
-**開発モードの判定**:
-- 「はい」「1」または番号なしで承認 → モード1（フル開発）
-- 「2」「テストはいらない」「テストなしで」等 → モード2
-- 「3」「レビュー不要」等 → モード3
-- 「4」「テストもレビューもなしで」「とりあえず動くものだけ」等 → モード4
-
-ユーザーが開発モードを選択したら、`.claude/memory/dev-session.md` に保存してから Step 3 に進む:
+After the user selects, create `.devflow/session.md`:
 
 ```markdown
 # Dev Session
@@ -161,142 +77,205 @@ Which language would you like to use for our conversation?
 - Mode: [1/2/3/4]
 - Testing: [enabled/disabled]
 - Review: [enabled/disabled]
-- Selected on: [YYYY-MM-DD]
 
 ## Project
 - Type: [CLI/Web App/Library/API Server/Other]
 - Language: [Node.js/Python/Go/Rust]
 - Scope: [new/existing]
 
-## Expected Outputs
-- [ ] docs/DESIGN.md (planner)
-- [ ] docs/TEST_SPEC.md (tester) ← テストありの場合のみ
-- [ ] docs/TEST_REPORT.md (tester) ← テストありの場合のみ
-- [ ] docs/REVIEW.md (reviewer) ← レビューありの場合のみ
-- [ ] README.md (documenter)
+## Requirements
+- Goal: [detailed goal]
+- Features: [feature list]
+- Tech Stack: [tech stack]
+- Constraints: [constraints]
+- Context: [background and motivation]
 
-## Requirements Summary
-- Goal:
-- Features:
-- Tech Stack:
-- Constraints:
+## Decisions
 
 ## Parallel Plan
-（planner 完了後に記入。coder の分担と並列数）
+
+## Expected Outputs
+- [ ] docs/DESIGN.md (planner)
+[add based on mode and project type]
 
 ## Progress
-- [ ] planner
-- [ ] coder + tester(Phase 1)
-- [ ] tester(Phase 2)
-- [ ] reviewer
-- [ ] documenter
+- [ ] Phase 2: Codebase Exploration
+- [ ] Phase 3: Clarifying Questions
+- [ ] Phase 4: Architecture Design
+- [ ] Phase 5: Implementation
+- [ ] Phase 6: Testing
+- [ ] Phase 7: Quality Review
+- [ ] Phase 8: Documentation
+- [ ] Phase 9: Summary
 ```
 
-**注意**: 開発モードは毎回必ず聞き直すこと。前回の `.claude/memory/dev-session.md` の値を引き継いではならない。このファイルは Step 3 の実行中にサブエージェントが参照する「セッション契約書」。
+Adjust Progress based on development mode (remove Phase 6 if no testing, remove Phase 7 if no review).
 
-**Expected Outputs の決定ルール**:
+**Expected Outputs rules**:
+- Always include: `docs/DESIGN.md` (planner), `README.md` (documenter)
+- Testing enabled (mode 1, 3) → add `docs/TEST_SPEC.md`, `docs/TEST_REPORT.md`
+- Review enabled (mode 1, 2) → add `docs/REVIEW.md`
+- HTTP API endpoints present → add `docs/API.md`
+- Multiple services/layers → add `docs/ARCHITECTURE.md`
 
-以下のルールに従って Expected Outputs を決定する:
+**Files not in Expected Outputs will not be generated.** Sub-agents check this list to control their output.
 
-**常に含める:**
-- `docs/DESIGN.md` (planner)
-- `README.md` (documenter)
+---
 
-**モードに応じて追加:**
-- テストあり（モード1, 3）→ `docs/TEST_SPEC.md`, `docs/TEST_REPORT.md` を追加
-- レビューあり（モード1, 2）→ `docs/REVIEW.md` を追加
+## Phase 2: Codebase Exploration
 
-**プロジェクトに応じて追加（ヒアリング結果から判断）:**
-- HTTP API エンドポイントあり → `docs/API.md` を追加
-- 複数サービス/レイヤーあり → `docs/ARCHITECTURE.md` を追加
+**Skip this phase for new projects** (no existing codebase to explore). Mark Phase 2 as complete in Progress and proceed.
 
-**Expected Outputs に載っていないファイルは生成しない。** サブエージェントがこのリストを参照して出力を制御する。
+If `.devflow/research.md` already exists: read it, evaluate if additional exploration is needed for the current requirements. Skip re-exploration if existing research is sufficient.
 
-## Step 3: 開発実行
+Launch **2-3 explorer agents** in parallel via the Task tool, each with a different focus:
+- Explorer 1: Trace similar features and related code paths
+- Explorer 2: Map architecture layers, patterns, and component boundaries
+- Explorer 3: Analyze existing implementation conventions and dependencies
 
-**重要**: ユーザーへの進捗報告や確認は、Step 0で設定された言語で行ってください。
+After all explorers return:
+- Read the must-read files identified by each explorer
+- **Write `.devflow/research.md`** consolidating all analysis results
+- Update session.md Progress: mark Phase 2 as complete
 
-**Step 3 開始前の準備**:
-1. `.claude/memory/dev-session.md` を読み、開発モードを確認する
-2. `## Requirements Summary` セクションにヒアリング結果を記入する（Goal, Features, Tech Stack, Constraints の各フィールド。サブエージェントへの Task プロンプトの基礎情報になる）
-3. `## Progress` セクションのチェックリストを開発モードに合わせて調整する（テストなしなら tester 行を削除、レビューなしなら reviewer 行を削除）
+---
 
-**サブエージェントの呼び出し方法**:
+## Phase 3: Clarifying Questions
 
-Taskツールを使ってサブエージェントを起動する。各エージェントへのプロンプトには以下を含める：
-- 要件の概要（ヒアリング結果）
-- Step 1 で検出したプロジェクト情報（既存改修の場合）
-- 前のエージェントの成果物への参照（例: 「docs/DESIGN.md を参照して実装してください」）
-- **「docs/ のドキュメントは指示書に記載された H2 構成に厳密に従うこと。H2 の追加は禁止」** をドキュメント生成エージェント（planner, tester, reviewer）への指示に含める
-- **tester への Phase 指定**: tester は Phase 1（テスト仕様書作成）と Phase 2（テスト実行）を持つ。呼び出し時に実行する Phase を明示すること:
-  - 並列実行（coder と同時）: 「Phase 1 のみ実行。テストコードの実装・実行は行わない」
-  - テスト実行（coder 完了後）: 「Phase 2 を実行。docs/TEST_SPEC.md は作成済み」
+**This phase must not be skipped.**
 
-**並列実行の判断基準**:
+Based on Phase 2 analysis results (or project requirements for new projects), ask clarifying questions covering:
+- Edge cases and error handling approaches
+- Integration points with existing code
+- Backward compatibility requirements
+- Performance requirements and constraints
+- Any ambiguities discovered during exploration
 
-plannerの設計結果に基づいて、coderの並列数と分担を動的に決定する:
+Wait for user responses, then **update session.md Decisions section** with all Q&A pairs.
+Mark Phase 3 as complete in Progress.
 
-- **独立した領域が複数ある場合** → 領域ごとにcoderを並列実行（例: フロントエンド + バックエンド、モジュールA + モジュールB）
-- **単一領域の場合** → coder 1つで実行（例: CLIツール、単機能の追加、バグ修正）
-- **テストありの場合（モード1, 3）はtesterも並列に含める** → 実装と同時にテスト仕様書・テストケースを設計
+---
 
-並列数は固定ではなく、タスクの規模と構造に応じて柔軟に決める。
+## Phase 4: Architecture Design
 
-**実行の鉄則**:
+Launch the **planner agent** via the Task tool. Include in the prompt:
+- Requirements from session.md
+- Reference to `.devflow/research.md` (if exists)
+- Instruction to generate Architecture Candidates with Pros/Cons
 
-**異なるステップのサブエージェントを同一メッセージのTaskで並列起動してはならない。** 各ステップのTaskが完了して結果を受け取ってから、次のステップのTaskを起動すること。
+After planner returns:
+- Read `docs/DESIGN.md` to review the Architecture Candidates
+- Present the trade-offs comparison to the user
+- Use the **AskUserQuestion tool** to let the user select an architecture option
 
-- 許可: 同一ステップ内の並列（例: step 2 で coder × 2 + tester を同時起動）
-- 禁止: 異なるステップの並列（例: planner と coder を同時起動、reviewer と documenter を同時起動）
+After selection:
+- Update session.md **Decisions** section: `Architecture: [selected option and rationale]`
+- Update session.md **Parallel Plan** based on planner's parallel execution recommendation
+- Mark Phase 4 as complete in Progress
 
-**実行フロー（開発モードに応じて分岐）**:
+---
 
-**共通ステップ（全モード）:**
-1. plannerエージェントで設計 → plannerのTaskが結果を返すまで待機 → `docs/DESIGN.md` を確認
-   **plannerの返答テキストにある並列実行推奨を読んでからcoderの分担を決定する。**
-   決定後、`.claude/memory/dev-session.md` を更新:
-   - `## Parallel Plan` に coder の分担（グループ数、各グループの担当領域）を記入
-   - `## Progress` の planner を `[x]` に更新
+## Phase 5: Implementation
 
-**テストありの場合（モード1, 3）:**
-2. **並列実行**（plannerの返答テキストの並列実行推奨に基づいて分担を決定）:
-   - coderエージェント × N（独立した実装領域ごとに1つ）
-   - testerエージェント — **Phase 1 のみ**（テスト仕様書・テストケース設計）
-3. 上記の全Taskが完了してから → testerエージェント — **Phase 2**（テスト実行）
-4. **テスト結果の確認**:
-   - OK: テスト成功 → 次のステップへ
-   - NG: テスト失敗 → coderエージェントで修正 → 3に戻る（**最大3回まで。3回失敗したら失敗箇所を報告して次へ進む**）
+Execute coder agents based on the Parallel Plan from Phase 4.
 
-**テストなしの場合（モード2, 4）:**
-2. **並列実行**（plannerの返答テキストの並列実行推奨に基づいて分担を決定）:
-   - coderエージェント × N（独立した実装領域ごとに1つ）
-   ※ tester は起動しない
+**Parallel execution criteria** (from planner's recommendation):
+- **Multiple independent areas** → launch one coder per area in parallel
+- **Single area** → launch one coder sequentially
+- **Testing enabled** → also launch tester (Phase 1 only: test spec design) in parallel with coders
 
-**レビューありの場合（モード1, 2）:**
-上記の全Taskが完了してから → reviewerエージェントでレビュー → `docs/REVIEW.md` を確認
+**Iron rule**: Never launch agents from different phases in the same message. Wait for all agents in the current phase to complete before starting the next.
 
-**レビューなしの場合（モード3, 4）:**
-reviewer をスキップして documenter へ
+Sub-agent prompts must include:
+- Requirements summary
+- Reference to docs/DESIGN.md
+- Detected project info (for existing projects)
+- For document-generating agents: "Follow the H2 structure strictly as defined in your instructions. Do not add H2 sections."
+- For tester in parallel: "Execute Phase 1 only. Do not implement or run test code."
 
-**共通ステップ（全モード）:**
-上記の全Taskが完了してから → documenterエージェントでドキュメント生成・更新（README, API仕様書等）
+After all coders (and tester Phase 1) complete:
+- Update session.md Progress with free-text status (e.g., `coder-1 (frontend) done, coder-2 (backend) done`)
+- Mark Phase 5 as complete
 
-**モード別フローまとめ**:
+---
 
-| モード | フロー |
-|--------|--------|
-| 1. フル開発 | planner → coder + tester(並列) → tester(実行) → reviewer → documenter |
-| 2. テストなし | planner → coder → reviewer → documenter |
-| 3. レビューなし | planner → coder + tester(並列) → tester(実行) → documenter |
-| 4. テスト・レビューなし | planner → coder → documenter |
+## Phase 6: Testing
 
-各 `→` は **前のステップのTask完了を待ってから** 次を起動する。`+` は同一メッセージでの並列起動。
+**Skip if testing is disabled** (mode 2, 4). Mark Phase 6 as complete and proceed.
 
-**Progress の更新**:
-各ステップのTaskが完了するたびに、`.claude/memory/dev-session.md` の `## Progress` セクションを更新する（`[ ]` → `[x]`）。これによりコンパクション後も進行状況を復帰できる。
+Launch the **tester agent** — Phase 2 (test execution). Include: "Phase 2: implement and run tests. docs/TEST_SPEC.md is already created."
 
-**その他の注意**:
-- テストありの場合、テストが通るまでレビューには進まない
-- coderの並列数は「独立して作業できる領域の数」で決める。無理に分割しない
-- 既存改修の場合は planner で影響範囲分析を行い、coder/tester の範囲を絞る
-- **コンパクション復帰**: コンテキストが圧縮されて進行状況を見失った場合は、`.claude/memory/dev-session.md` を再読み込みし、Requirements Summary（要件）、Parallel Plan（分担）、Progress（どこまで完了したか）から現在の状態を復帰すること
+**Test result handling**:
+- PASSED → update Progress (`attempt 1 - PASSED`), proceed to next phase
+- FAILED → launch coder to fix, then re-run tester Phase 2. **Maximum 3 attempts**. After 3 failures, report failed items and proceed
+- Update session.md Progress after each attempt (e.g., `attempt 1 - FAILED, attempt 2 - PASSED`)
+
+---
+
+## Phase 7: Quality Review
+
+**Skip if review is disabled** (mode 3, 4). Mark Phase 7 as complete and proceed.
+
+Launch the **reviewer agent** via the Task tool.
+
+After reviewer returns:
+- Read `docs/REVIEW.md` for findings with confidence scores
+- Present Critical and Warning findings to the user
+- Use the **AskUserQuestion tool** to let the user choose:
+  - Fix now → launch coder to fix specified issues, then proceed
+  - Fix later → note issues and proceed
+  - Proceed as-is → proceed without changes
+
+Update session.md **Decisions** section: `Review Response: [user's choice and details]`
+Mark Phase 7 as complete in Progress.
+
+---
+
+## Phase 8: Documentation
+
+Launch the **documenter agent** via the Task tool.
+
+After documenter returns:
+- Verify that expected output files were created
+- Mark Phase 8 as complete in Progress
+
+---
+
+## Phase 9: Summary
+
+**Completion report** — present to the user:
+1. What was implemented (features, components)
+2. Key decisions made (architecture choice, review response)
+3. Changed files summary
+4. Suggested next steps (future improvements, known limitations)
+
+**Session archiving**:
+- Create directory `.devflow/history/YYYY-MM-DD-HHmm-{summary-title}/`
+  - Summary title is auto-generated from Requirements Goal (e.g., `2026-02-23-1430-user-auth/`)
+- Copy `.devflow/session.md` → `history/{dir}/session.md`
+- Copy `docs/DESIGN.md` → `history/{dir}/design.md`
+- Keep `.devflow/session.md` as-is (used for next session's continuation check)
+
+Mark Phase 9 as complete in Progress.
+
+---
+
+## Development Mode Flow Summary
+
+| Mode | Flow |
+|------|------|
+| 1. Full | planner → coder + tester(spec) → tester(run) → reviewer → documenter |
+| 2. No test | planner → coder → reviewer → documenter |
+| 3. No review | planner → coder + tester(spec) → tester(run) → documenter |
+| 4. No test/review | planner → coder → documenter |
+
+Each `→` means **wait for the previous step to complete**. `+` means parallel launch in the same message.
+
+---
+
+## Compaction Recovery
+
+If context is compacted and you lose track of progress, re-read these files to recover full context:
+- `.devflow/session.md` — requirements, decisions, parallel plan, progress
+- `.devflow/research.md` — codebase analysis
+- `docs/DESIGN.md` — architecture design and file structure
