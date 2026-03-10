@@ -1,16 +1,16 @@
 {
-  "name": "flux",
+  "name": "claude",
   "owner": {
     "name": "shumatsumonobu",
     "email": "shumatsumonobu@gmail.com"
   },
   "metadata": {
-    "description": "Collection of Claude Code plugins for enhanced development workflows"
+    "description": "Plugin marketplace for Claude Code"
   },
   "plugins": [
     {
       "name": "devflow",
-      "source": "./devflow",
+      "source": "./plugins/devflow",
       "description": "PM-driven development workflow with 6 specialized agents (explorer, planner, coder, tester, reviewer, documenter)",
       "version": "2.0.0",
       "category": "development",

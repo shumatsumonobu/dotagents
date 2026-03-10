@@ -54,8 +54,8 @@ One instruction, and the entire development cycle runs automatically.
 [Claude Code](https://claude.com/claude-code) >= 1.0.0 required.
 
 ```
-/plugin marketplace add shumatsumonobu/flux
-/plugin install devflow@flux
+/plugin marketplace add shumatsumonobu/claude
+/plugin install devflow@claude
 ```
 
 After installation, **restart Claude Code** to load the agents. Verify with `/agents`.
@@ -64,7 +64,7 @@ After installation, **restart Claude Code** to load the agents. Verify with `/ag
 > If you get validation errors like `agents: Invalid input`, clear the plugin cache and retry:
 > ```
 > rm -rf ~/.claude/plugins/cache/
-> /plugin install devflow@flux
+> /plugin install devflow@claude
 > ```
 
 ## Usage
@@ -399,14 +399,14 @@ By default, notifications are displayed in the terminal. Customize `hooks/hooks.
 ## Uninstall
 
 ```
-/plugin uninstall devflow@flux
+/plugin uninstall devflow@claude
 ```
 
 ## Update
 
 ```
 rm -rf ~/.claude/plugins/cache/
-cd ~/.claude/plugins/marketplaces/flux && git pull
+cd ~/.claude/plugins/marketplaces/claude && git pull
 ```
 
 Restart Claude Code after updating.

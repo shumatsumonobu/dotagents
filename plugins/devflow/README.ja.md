@@ -54,8 +54,8 @@ DevFlow: 爆速モードで進めます。
 [Claude Code](https://claude.com/claude-code) >= 1.0.0 が必要です。
 
 ```
-/plugin marketplace add shumatsumonobu/flux
-/plugin install devflow@flux
+/plugin marketplace add shumatsumonobu/claude
+/plugin install devflow@claude
 ```
 
 インストール後、**Claude Code を再起動**してエージェントを読み込みます。`/agents` で確認できます。
@@ -64,7 +64,7 @@ DevFlow: 爆速モードで進めます。
 > `agents: Invalid input` 等のバリデーションエラーが出る場合、プラグインキャッシュをクリアして再試行:
 > ```
 > rm -rf ~/.claude/plugins/cache/
-> /plugin install devflow@flux
+> /plugin install devflow@claude
 > ```
 
 ## 使い方
@@ -399,14 +399,14 @@ DevFlow は全状態を `.devflow/session.md` に保存する:
 ## アンインストール
 
 ```
-/plugin uninstall devflow@flux
+/plugin uninstall devflow@claude
 ```
 
 ## アップデート
 
 ```
 rm -rf ~/.claude/plugins/cache/
-cd ~/.claude/plugins/marketplaces/flux && git pull
+cd ~/.claude/plugins/marketplaces/claude && git pull
 ```
 
 アップデート後は Claude Code を再起動してください。

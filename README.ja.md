@@ -1,12 +1,12 @@
 [English README](README.md)
 
-# Flux
+# Claude
 
 Claude Code のプラグインマーケットプレイス
 
 ## プラグイン
 
-### [DevFlow](devflow/README.ja.md)
+### [DevFlow](plugins/devflow/README.ja.md)
 
 「こんなの作りたい」って伝えるだけ。6つの専門エージェントがコードベース分析から設計・実装・テスト・レビュー・ドキュメント生成まで自動で回します。
 
@@ -31,13 +31,13 @@ DevFlow: どのアーキテクチャにしますか？
 ### 1. マーケットプレイスを追加
 
 ```
-/plugin marketplace add shumatsumonobu/flux
+/plugin marketplace add shumatsumonobu/claude
 ```
 
 ### 2. プラグインをインストール
 
 ```
-/plugin install devflow@flux
+/plugin install devflow@claude
 ```
 
 スコープを選択:

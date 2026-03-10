@@ -1,12 +1,12 @@
 [日本語版 README はこちら](README.ja.md)
 
-# Flux
+# Claude
 
 A plugin marketplace for Claude Code.
 
 ## Plugins
 
-### [DevFlow](devflow/README.md)
+### [DevFlow](plugins/devflow/README.md)
 
 Just say what you want to build. 6 specialized agents handle the full development cycle — exploration, design, implementation, testing, review, and documentation — automatically.
 
@@ -31,13 +31,13 @@ You:     (clicks Option 2)
 ### 1. Add marketplace
 
 ```
-/plugin marketplace add shumatsumonobu/flux
+/plugin marketplace add shumatsumonobu/claude
 ```
 
 ### 2. Install plugin
 
 ```
-/plugin install devflow@flux
+/plugin install devflow@claude
 ```
 
 Choose your preferred scope:
