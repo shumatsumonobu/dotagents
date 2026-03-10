@@ -1,5 +1,3 @@
-[日本語版はこちら](CHANGELOG.ja.md)
-
 # Changelog
 
 All notable changes to this project will be documented in this file.
@@ -8,6 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+### Changed
+- **Repository**: Renamed from `shumatsumonobu/flux` to `shumatsumonobu/claude`
+- **READMEs**: Rewritten for clarity — trimmed from 428 to ~150 lines, removed internal details, user-focused
+- **Project structure**: Moved plugin from `devflow/` to `plugins/devflow/`
+
+### Removed
+- **Japanese documentation**: Removed `README.ja.md`, `CHANGELOG.ja.md` — English only, Japanese coverage via [Zenn articles](https://zenn.dev/helloworld)
+- **PLAN.md**: Completed v2.0 plan (merged into CHANGELOG)
+- **Duplicate LICENSE**: Removed from plugin directory (root LICENSE covers all)
 
 <!--
 ### Planned

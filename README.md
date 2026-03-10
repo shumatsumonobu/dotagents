@@ -1,5 +1,3 @@
-[日本語版 README はこちら](README.ja.md)
-
 # Claude
 
 A plugin marketplace for Claude Code.
@@ -8,39 +6,27 @@ A plugin marketplace for Claude Code.
 
 ### [DevFlow](plugins/devflow/README.md)
 
-Just say what you want to build. 6 specialized agents handle the full development cycle — exploration, design, implementation, testing, review, and documentation — automatically.
+Just say what you want to build. 6 specialized agents handle the full cycle — exploration, design, implementation, testing, review, and documentation — automatically.
 
 ```
-You:     /devflow:dev
-         "Add a chat feature using Gemini API"
+You:     /devflow:dev "Add a chat feature using Gemini API"
 
-DevFlow: Web UI or CLI? Save conversation history?
-You:     Web UI. Session-only is fine.
+DevFlow: Web UI or CLI? Save history?
+You:     Web UI. Session-only.
 
 DevFlow: Which architecture?
          [Option 1: Minimal]  [Option 2: Clean]  [Option 3: Balanced]
 You:     (clicks Option 2)
 
--> Automatically runs explore -> design -> code -> test -> review -> docs
+→ explore → design → code → test → review → docs → done
 ```
 
-**Features**: Conversational requirements, codebase exploration, architecture candidates, multi-language (TS/JS, Python, Go, Rust), parallel execution, development modes, auto-fix loop, confidence scoring, session history, security checks, memory
-
-## Installation
-
-### 1. Add marketplace
+## Install
 
 ```
 /plugin marketplace add shumatsumonobu/claude
-```
-
-### 2. Install plugin
-
-```
 /plugin install devflow@claude
 ```
-
-Choose your preferred scope:
 
 | Scope | Usage |
 |-------|-------|
@@ -48,13 +34,7 @@ Choose your preferred scope:
 | **project** | Shared with team via Git |
 | **local** | Personal use, Git excluded |
 
-### 3. Restart and verify
-
-Restart Claude Code, then run:
-
-```
-/agents
-```
+Restart Claude Code, then `/agents` to verify.
 
 ## Requirements
 
