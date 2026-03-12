@@ -1,11 +1,11 @@
 {
-  "name": "claude",
+  "name": "dotagents",
   "owner": {
     "name": "shumatsumonobu",
     "email": "shumatsumonobu@gmail.com"
   },
   "metadata": {
-    "description": "Plugin marketplace for Claude Code"
+    "description": "Agents, unchained."
   },
   "plugins": [
     {

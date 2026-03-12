@@ -9,8 +9,8 @@ DevFlow is a Claude Code plugin. 6 specialized agents handle the full developmen
 Requires [Claude Code](https://claude.com/claude-code) >= 1.0.0.
 
 ```
-/plugin marketplace add shumatsumonobu/claude
-/plugin install devflow@claude
+/plugin marketplace add shumatsumonobu/dotagents
+/plugin install devflow@dotagents
 ```
 
 Restart Claude Code after installation. Run `/agents` to verify.
@@ -19,7 +19,7 @@ Restart Claude Code after installation. Run `/agents` to verify.
 > If you get `agents: Invalid input`, clear cache and retry:
 > ```
 > rm -rf ~/.claude/plugins/cache/
-> /plugin install devflow@claude
+> /plugin install devflow@dotagents
 > ```
 
 ## What It Looks Like
@@ -128,14 +128,14 @@ flowchart TD
 ## Uninstall
 
 ```
-/plugin uninstall devflow@claude
+/plugin uninstall devflow@dotagents
 ```
 
 ## Update
 
 ```
 rm -rf ~/.claude/plugins/cache/
-cd ~/.claude/plugins/marketplaces/claude && git pull
+cd ~/.claude/plugins/marketplaces/dotagents && git pull
 ```
 
 Restart Claude Code after updating.

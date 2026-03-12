@@ -1,6 +1,6 @@
-# Claude
+# dotagents
 
-A plugin marketplace for Claude Code.
+Agents, unchained.
 
 ## Plugins
 
@@ -24,8 +24,8 @@ You:     (clicks Option 2)
 ## Install
 
 ```
-/plugin marketplace add shumatsumonobu/claude
-/plugin install devflow@claude
+/plugin marketplace add shumatsumonobu/dotagents
+/plugin install devflow@dotagents
 ```
 
 | Scope | Usage |
