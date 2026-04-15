@@ -1,0 +1,10 @@
+{
+  "name": "design-docs",
+  "description": "Auto-generate and sync design documents from source code using code-review-graph and ast-grep",
+  "version": "1.0.0",
+  "author": {
+    "name": "shumatsumonobu"
+  },
+  "repository": "https://github.com/shumatsumonobu/dotagents",
+  "license": "MIT"
+}
