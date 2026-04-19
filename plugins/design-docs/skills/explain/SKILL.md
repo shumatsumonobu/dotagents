@@ -2,7 +2,7 @@
 name: explain
 description: Answer questions about design and features. Investigates design documents and source code to explain processing flows, specifications, and architecture. Use for "how does this work?", "what is this feature?", "why is this designed this way?".
 disable-model-invocation: true
-argument-hint: [question e.g. How does the TODO CRUD work?]
+argument-hint: [question e.g. How does user registration work?]
 allowed-tools: Read Grep Glob Bash
 ---
 

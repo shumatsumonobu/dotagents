@@ -6,14 +6,14 @@
 
 - output: docs/design/
 - language: ja
-- framework: express (auto-detected)
+- framework: Express で Web API
 
 ## documents
 
 | Document | Template | Entry Point |
 |----------|----------|-------------|
-| todos-api.md | api | src/routes/todos.js |
 | users-api.md | api | src/routes/users.js |
+| orders-api.md | api | src/routes/orders.js |
 | dashboard.md | screen | src/pages/dashboard.html |
 | cleanup.md | batch | src/batch/cleanup.js |
 | logger.md | module | src/utils/logger.js |
@@ -28,8 +28,8 @@
 > ```
 > | Document | Template | Entry Point |
 > |----------|----------|-------------|
-> | todos-api.md | api | TODO CRUD API |
+> | users-api.md | api | User management API |
 > | dashboard.md | screen | Dashboard screen |
-> | cleanup.md | batch | Old TODO cleanup batch |
+> | cleanup.md | batch | Old record cleanup batch |
 > | logger.md | module | Logging module |
 > ```

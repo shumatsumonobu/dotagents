@@ -22,6 +22,21 @@
         "testing",
         "review"
       ]
+    },
+    {
+      "name": "design-docs",
+      "source": "./plugins/design-docs",
+      "description": "Auto-generate and sync design documents from web application source code. Pattern-driven (framework-agnostic) using code-review-graph and ast-grep.",
+      "version": "1.0.0",
+      "category": "documentation",
+      "tags": [
+        "design-docs",
+        "documentation",
+        "ast-grep",
+        "code-review-graph",
+        "pattern-driven",
+        "framework-agnostic"
+      ]
     }
   ]
 }

@@ -2,7 +2,7 @@
 name: review
 description: Review design documents for quality. Checks template structure, writing rules, and source code consistency. Use for "review", "check docs".
 disable-model-invocation: true
-argument-hint: [document name e.g. todos-api.md]
+argument-hint: [document name e.g. users-api.md]
 allowed-tools: Read Grep Glob Bash
 ---
 
@@ -55,28 +55,36 @@ Check against all rules in [rules/default.md](rules/default.md).
 10. Numbered items in unified format
 11. No separate implementation locations section
 
-### 4. Source code verification (code present only)
+### 4. Branch by code presence
 
-Extract facts from source with ast-grep and cross-check with design document.
+#### Code present
 
-**Verification items:**
+a. **Source code verification.** Extract facts from source with ast-grep and cross-check with design document. Classify by confidence:
+
+**Exact (ast-grep-based, ✓) — high confidence:**
 - Endpoint HTTP methods and paths match route definitions
+- Middleware application order matches route definitions
+
+**Approximate (AI judgment, ≈) — moderate confidence (~80-90%):**
 - Request parameter types and required/optional match validation definitions
 - Response JSON structure matches actual response objects
 - Error codes and HTTP status match throw/res.status values
 - DB operations (tables, columns, conditions) match implementation
-- Middleware application order matches route definitions
 
-**Gap check:**
+In the review output, label each item as ✓ (exact) or ≈ (approximate) so users can understand the confidence level.
+
+Use patterns from `design-docs.knowledge.md` for exact checks. Fall back to direct Read for approximate checks.
+
+b. **Gap check:**
 - Endpoints that exist in source but not documented
 - Error cases that exist in source but not documented
 
-### 5. Code not present — additional checks
+#### Code not present
 
 - Source code verification section outputs "Skipped — source not implemented"
 - Report TBD section count ("TBD remaining: N items")
 
-### 6. Output results
+### 5. Output results
 
 Output as checklist:
 
@@ -99,13 +107,15 @@ Output as checklist:
 - [ ] 6. Source attribution ← point out location
 - ...
 
-### Source Code Verification
-- [x] Endpoint HTTP methods/paths match route definitions
-- [ ] Request parameter types/required match validation definitions ← point out diff
-- [x] Response JSON structure matches actual response objects
-- [x] Error codes/HTTP status match throw/res.status values
-- [ ] DB operations (tables/columns/conditions) match implementation ← point out diff
-- [x] Middleware application order matches route definitions
+### Source Code Verification (✓ exact / ≈ approximate)
+- ✓ [x] Endpoint HTTP methods/paths match route definitions
+- ✓ [x] Middleware application order matches route definitions
+- ≈ [ ] Request parameter types/required match validation definitions ← point out diff
+- ≈ [x] Response JSON structure matches actual response objects
+- ≈ [x] Error codes/HTTP status match throw/res.status values
+- ≈ [ ] DB operations (tables/columns/conditions) match implementation ← point out diff
+
+> ✓ = exact verification via ast-grep. ≈ = approximate verification via AI reading (~80-90% accuracy).
 
 ### Findings
 

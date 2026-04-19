@@ -79,14 +79,15 @@ Search by `id`
 When `status` is completed
 
 # OK
-Search by `todo.id`
-When `todo.status` is completed
+Search by `user.id`
+When `user.status` is active
 ```
 
 ### 6. Source Attribution
 
-Always specify the source of conditions and values (table name, constant name, environment variable name).
+Always specify the source of conditions and values (table name, constant name, environment variable name, config key, etc.).
 
+**Basic example:**
 ```
 # NG
 Delete when retention period exceeded
@@ -95,19 +96,64 @@ Delete when retention period exceeded
 Delete when `RETENTION_DAYS` (env var, default: 30) exceeded
 ```
 
+**DB column reference:**
+```
+# NG
+Filter by user status
+
+# OK
+Filter by `user.status = 'active'`
+```
+
+**Composite condition (name the composite):**
+```
+# NG
+Allow if user is authenticated and has permission
+
+# OK
+Allow if `isAuthorized = isAuthenticated(user) AND hasPermission(user, resource)`
+```
+
+**Derived value (show the derivation):**
+```
+# NG
+Calculated total
+
+# OK
+Total = sum of `order.items[].price` minus `order.discountAmount`
+```
+
+**Configuration-driven logic:**
+```
+# NG
+Skip if disabled in config
+
+# OK
+Skip if `config.features.autoSync` is `false` (from `config/features.yml`)
+```
+
+**Framework default or magic value:**
+```
+# NG
+Default page size
+
+# OK
+Default page size: 20 (from `DEFAULT_PAGE_SIZE` constant in `src/config.ts`)
+```
+
 ### 7. Implementation Location
 
 Always include the corresponding file path and method name for processing descriptions.
 
 ```
 # NG
-Execute TODO creation process
+Execute user creation process
 
 # OK
-**File:** `src/services/TodoService.js`
-**Method:** `createTodo()`
+**File:** `src/services/UserService.js`
+**Method:** `createUser()`
 
-Create TODO record
+Create user record
 ```
 
 ### 8. Unified Endpoint Format
@@ -120,7 +166,7 @@ Each API detail section must use this unified format:
 | Item | Value |
 |------|-------|
 | Method | POST |
-| Path | `/api/todos` |
+| Path | `/api/users` |
 | Auth | JWT |
 
 ### Request Parameters

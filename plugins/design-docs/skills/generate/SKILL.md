@@ -1,14 +1,14 @@
 ---
 name: generate
-description: Generate design documents from source code analysis using templates. Use when asked to create or write design documents.
+description: Generate design documents from source code analysis using templates and project-specific patterns. Use when asked to create or write design documents.
 disable-model-invocation: true
-argument-hint: [document name e.g. todos-api.md]
+argument-hint: [document name e.g. users-api.md]
 allowed-tools: Read Grep Glob Bash Write
 ---
 
 # design-docs:generate
 
-Generate design documents from source code or hearing content using templates.
+Generate design documents from source code or hearing content using templates and patterns from `design-docs.knowledge.md`.
 
 ## Language
 
@@ -41,9 +41,18 @@ Read `design-docs.config.md` and get info for the specified document (or all doc
 
 If the entry point column contains a file path (e.g. `src/...`) → code present. If it contains a feature name in natural language → code not present.
 
-Output path: `{config.md settings.output}/{document name}` (e.g. `docs/design/todos-api.md`).
+Output path: `{config.md settings.output}/{document name}` (e.g. `docs/design/users-api.md`).
 
-### 3. Select template
+### 3. Load patterns from knowledge.md
+
+Read `design-docs.knowledge.md`. Extract patterns by Section.
+
+- **If knowledge.md doesn't exist or is empty (no patterns):**
+  - For code-present case: tell user "Patterns not set up. Run `/design-docs:init` to infer patterns from your code" and stop.
+  - For code-not-present case: continue (no patterns needed).
+- **If patterns exist:** use them in step 5 (Collect information and generate) for extraction.
+
+### 4. Select template
 
 Check the template type from config.md. If one of the 4 standard templates (api/screen/batch/module) matches, use it. If none fits well, auto-generate an appropriate section structure based on the source code's characteristics, using the standard templates as reference. In this case, the review skill will skip template structure validation and only check rules.
 
@@ -53,7 +62,7 @@ Templates (section headings must be translated to match the configured language)
 - [batch.md](templates/batch.md)
 - [module.md](templates/module.md)
 
-### 4. Collect information and generate
+### 5. Collect information and generate
 
 #### Code present
 
@@ -67,11 +76,19 @@ else
 fi
 PYTHONUTF8=1 code-review-graph wiki
 ```
-Read markdown files under `.code-review-graph/wiki/` and identify related files from the community member list (file paths + line numbers) that the entry point belongs to.
+Read markdown files under `.code-review-graph/wiki/` and identify related files from the community member list that the entry point belongs to.
 
-b. **Extract structural info with ast-grep** — follow the Information Collection Guidelines below to collect info needed for each section of the selected template.
+b. **Extract structural info using patterns from knowledge.md:**
 
-c. **Read source directly only where detail is needed.**
+For each section of the selected template, find the matching pattern in knowledge.md (by Section field) and run:
+
+```bash
+sg --pattern '<pattern from knowledge.md>' --lang <language from knowledge.md> --json=compact <target files>
+```
+
+Use the `Scope` field to determine which files to run the pattern on. If no pattern is defined for a section, fall back to direct source reading.
+
+c. **Read source directly for content that can't be pattern-matched** (validation logic, branch conditions, transaction handling, response shaping, etc.).
 
 d. **Generate design document using the selected template** — fill each section with collected information.
 
@@ -91,7 +108,7 @@ b. Fill sections with "TBD — to be filled after implementation". However, fill
 
 c. Set revision history source commit to "- (not implemented)".
 
-### 5. Wireframe processing (screen template only)
+### 6. Wireframe processing (screen template only)
 
 1. Check if existing HTML wireframes exist in the output `assets/` directory
 2. **If exists** → convert to PNG with Playwright:
@@ -108,42 +125,35 @@ c. Set revision history source commit to "- (not implemented)".
 - Simple borders `1px solid #000`
 - No decorative design (purpose is to confirm layout and items)
 
-### 6. User approval
+### 7. User approval
 
 Present the full design document to the user and write to file only after approval.
 
-### 7. Staged generation (multiple documents)
+### 8. Staged generation (multiple documents)
 
 When processing all documents without argument, process one at a time. When generating the next document, include only related existing design documents in context (identified by code-review-graph dependency graph).
 
 ## Information Collection Guidelines (code present)
 
-Defines what to collect with ast-grep vs Read for each section. Use ast-grep to grasp structure first, then Read only where detail is needed.
+Defines what to collect via patterns (from knowledge.md) vs direct Read for each section. Use patterns to grasp structure first, then Read only where detail is needed.
 
-| Section | ast-grep | Read |
-|---------|----------|------|
-| API list | Endpoint definitions (`router.$METHOD($PATH, $$$)`) | — |
-| Request parameters | — | Validation definitions (express-validator chains, etc.) |
-| Response | — | res.json / res.send argument structure |
-| Error response | — | throw / res.status conditional branches |
-| Processing flow | Function signatures (`async function $NAME($$$) { $$$ }`) | Branch conditions, transaction handling |
-| DB operations | Model calls (`$MODEL.find($$$)`, etc.) | WHERE conditions, JOINs, transactions |
-| Middleware | Middleware chain in route definitions | Auth/authorization logic details |
-| Screen item definitions | Component props / state definitions | Validation, event handlers |
+| Section | From knowledge.md patterns | From direct Read |
+|---------|---------------------------|------------------|
+| API list | Endpoint definitions (match entries with Section = "API list") | — |
+| Request parameters | — | Validation definitions |
+| Response | — | Response object shaping code |
+| Error response | — | Error throws and status codes |
+| Processing flow | Function signatures (match entries with Section = "Processing flow") | Branch conditions, transaction handling |
+| DB operations | Model/repository calls (match entries with Section = "DB operations") | WHERE conditions, JOINs, transactions |
+| Middleware | Middleware chains (match entries with Section = "Middleware") | Auth/authorization logic details |
+| Screen item definitions | Component props/state (match entries with Section = "Screen items") | Validation, event handlers |
 | Batch target data | — | SQL queries, target condition logic |
 
-ast-grep patterns vary by framework. Above is for Express/Sequelize. Switch patterns based on `framework` in config.md.
+If knowledge.md is missing a pattern for a section, fall back to direct Read of the relevant files (identified via Phase 3 samples from init).
 
-**ast-grep examples:**
-```bash
-# Extract endpoints
-sg --pattern 'router.$METHOD($PATH, $$$)' --lang js --json=compact
+## Pattern size monitoring
 
-# Extract function signatures
-sg --pattern 'async function $NAME($$$) { $$$ }' --lang js --json=compact
-```
-
-JSON output: `metaVariables.single.METHOD.text` for HTTP method, `metaVariables.single.PATH.text` for path.
+Count entries with `grep -c "^- \*\*Section:" design-docs.knowledge.md`. If the count exceeds 50 → warn the user that the patterns file is large and may indicate consolidation is needed. Continue execution.
 
 ## Writing rules
 

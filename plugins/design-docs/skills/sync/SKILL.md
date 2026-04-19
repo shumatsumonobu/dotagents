@@ -2,7 +2,7 @@
 name: sync
 description: Sync design documents with source code changes. Analyzes impact of code changes and proposes document updates. Use for "update docs", "sync docs", "check diff".
 disable-model-invocation: true
-argument-hint: [document name e.g. todos-api.md]
+argument-hint: [document name e.g. users-api.md]
 allowed-tools: Read Grep Glob Bash Edit Write
 ---
 
@@ -57,7 +57,25 @@ Get the actual change content for files in the impact scope:
 git diff {base_commit}..HEAD -- {impacted_file1} {impacted_file2} ...
 ```
 
-### 5. Determine section impact
+### 5. ast-grep diff for endpoint additions/removals
+
+`detect-changes` misses anonymous callbacks (e.g., Express router handlers). Supplement with an ast-grep diff using patterns from `design-docs.knowledge.md`:
+
+```bash
+# Current endpoints at HEAD
+sg --pattern '<pattern from knowledge.md>' --lang <lang> --json=compact <file>
+
+# Endpoints at base commit (use git show)
+git show {base_commit}:{file} | sg --pattern '<pattern>' --lang <lang> --json=compact --stdin
+```
+
+Compute the set difference to explicitly identify:
+- **Added endpoints** (present in HEAD, missing in base)
+- **Removed endpoints** (present in base, missing in HEAD)
+
+Feed these into the section impact determination (step 6). Skip this step if knowledge.md has no patterns for the relevant section.
+
+### 6. Determine section impact
 
 Analyze changes and determine which design document sections are affected:
 
@@ -71,7 +89,7 @@ Analyze changes and determine which design document sections are affected:
 | Screen item change | Screen item definitions, operation specs |
 | Batch condition change | Target data, processing flow |
 
-### 6. Classify changes
+### 7. Classify changes
 
 Classify only impacted changes:
 
@@ -86,7 +104,7 @@ Classify only impacted changes:
 - Test code changes
 - Performance improvements (no behavior change)
 
-### 7. Output update proposal
+### 8. Output update proposal
 
 Output in this format:
 
@@ -112,7 +130,7 @@ Output in this format:
 - {refactoring summary, etc.}
 ```
 
-### 8. User approval and update
+### 9. User approval and update
 
 Get user approval before editing the document. Support partial approval (apply only selected changes).
 

@@ -1,3 +1,5 @@
+[English](README.md) | [日本語](README.ja.md)
+
 # dotagents
 
 Agents, unchained.
@@ -21,11 +23,32 @@ You:     (clicks Option 2)
 → explore → design → code → test → review → docs → done
 ```
 
+### [design-docs](plugins/design-docs/README.md)
+
+Auto-generate and sync design documents from web application source code. Pattern-driven (framework-agnostic) — init infers ast-grep patterns from your actual code, no hardcoded framework list.
+
+```
+You:         /design-docs:init
+
+design-docs: (hearing) What language? Output dir? Code present? Project summary?
+You:         TypeScript, docs/design/, yes, Next.js e-commerce backend
+
+design-docs: Detected files: src/routes/users.ts, src/routes/orders.ts, ...
+             Is this classification correct?
+You:         Yes
+
+design-docs: Inferred patterns → detected 12 endpoints across 3 files. Accurate?
+You:         Yes
+
+→ generates config.md + knowledge.md, ready for /design-docs:generate
+```
+
 ## Install
 
 ```
 /plugin marketplace add shumatsumonobu/dotagents
 /plugin install devflow@dotagents
+/plugin install design-docs@dotagents
 ```
 
 | Scope | Usage |

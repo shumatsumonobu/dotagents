@@ -1,3 +1,5 @@
+[English](README.md) | [日本語](README.ja.md)
+
 # design-docs
 
 A Claude Code plugin that auto-generates and syncs design documents from web application source code. Uses [code-review-graph](https://github.com/tirth8205/code-review-graph) for dependency analysis and [ast-grep](https://github.com/ast-grep/ast-grep) for structural extraction to produce consistent, high-quality design documents every time.
@@ -26,6 +28,8 @@ claude --plugin-dir ./plugins/design-docs
 
 ### 3. Initialize
 
+Run on any Web application project:
+
 ```
 /design-docs:init
 ```
@@ -46,22 +50,26 @@ All other features work without Playwright.
 
 ### `/design-docs:init`
 
-Set up the design document environment.
+Set up the design document environment with a 5-phase flow:
 
 ```
 /design-docs:init
 ```
 
-- Asks about document language, output directory, and code availability
-- Analyzes source with code-review-graph and ast-grep to auto-propose document splits
-- Generates `design-docs.config.md`
+- **Phase 1:** Asks 4 questions — document language, output directory, code presence, project description (freeform)
+- **Phase 2:** Asks what the project contains (API / screens / batch / modules)
+- **Phase 3:** Auto-detects sample files via Glob, user confirms classification
+- **Phase 4:** Infers ast-grep patterns from confirmed samples, shows match results (not raw patterns) for verification
+- **Phase 5:** Generates `design-docs.config.md` + `design-docs.knowledge.md`
+
+For projects without code yet, init does Phase 1 + an additional hearing (what to build, main features, planned stack), then generates config.md with feature-name entries and an empty knowledge.md. Re-run init after implementing code to populate patterns.
 
 ### `/design-docs:generate [doc-name]`
 
 Generate design documents.
 
 ```
-/design-docs:generate todos-api.md    # specific document
+/design-docs:generate users-api.md    # specific document
 /design-docs:generate                 # all documents (staged)
 ```
 
@@ -75,7 +83,7 @@ Generate design documents.
 Detect code changes and propose document updates.
 
 ```
-/design-docs:sync todos-api.md       # specific document
+/design-docs:sync users-api.md       # specific document
 /design-docs:sync                    # all documents
 ```
 
@@ -89,7 +97,7 @@ Detect code changes and propose document updates.
 Review document quality.
 
 ```
-/design-docs:review todos-api.md     # specific document
+/design-docs:review users-api.md     # specific document
 /design-docs:review                  # all documents
 ```
 
@@ -103,36 +111,13 @@ Review document quality.
 Answer questions about design and features.
 
 ```
-/design-docs:explain How does the TODO CRUD work?
+/design-docs:explain How does user registration work?
 /design-docs:explain What is the auth flow?
 ```
 
 - Investigates both design documents and source code
 - Explains with numbered steps and mermaid diagrams
 - Cites sources (file paths, method names)
-
-## Demo
-
-A working Express app is included in `examples/todo-app/`.
-
-```bash
-# Set up the demo app
-cd examples/todo-app
-npm install
-cd ../..
-
-# Initialize
-/design-docs:init
-
-# Generate a design document
-/design-docs:generate todos-api.md
-
-# After making code changes, sync
-/design-docs:sync todos-api.md
-
-# Review quality
-/design-docs:review todos-api.md
-```
 
 ## Configuration
 
@@ -144,18 +129,59 @@ cd ../..
 ## settings
 - output: docs/design/
 - language: ja
-- framework: express (auto-detected)
+- framework: Express で Web API
 
 ## documents
 | Document | Template | Entry Point |
 |----------|----------|-------------|
-| todos-api.md | api | src/routes/todos.js |
+| users-api.md | api | src/routes/users.js |
 | dashboard.md | screen | src/pages/dashboard.html |
 | cleanup.md | batch | src/batch/cleanup.js |
 | logger.md | module | src/utils/logger.js |
 ```
 
 See [config/config.example.md](config/config.example.md) for a full example including code-not-present format.
+
+## How it works (and its limits)
+
+**Framework-agnostic by design.** `/design-docs:init` reads your actual source files and infers ast-grep patterns — it does not rely on a predefined framework list. Works with any language or framework as long as you can point to sample files during init.
+
+Patterns are saved to `design-docs.knowledge.md` at the project root and reused by all subsequent commands. Commit this file to git so your team shares the same patterns.
+
+### Verification confidence
+
+**Exact (via ast-grep) — ✓**
+- Endpoint methods/paths
+- Middleware order
+
+**Approximate (via AI reading, ~80-90% accuracy) — ≈**
+- Request validation matching
+- Response structure matching
+- Error code/status matching
+- DB operation matching
+
+The review skill marks each verification item with ✓ or ≈ so you know the confidence level.
+
+### Execution time
+
+- Document generation: 10-30 seconds per document
+- Review: 5-15 seconds per document
+- Sync: 10-20 seconds per document
+
+### Best for
+
+- Web API projects (REST/GraphQL) with any framework
+- Projects with web screens and wireframes
+- Batch jobs and backend modules
+
+### Not suitable for
+
+- Projects where endpoints/screens are generated fully dynamically at runtime with no static source pattern
+- Non-web applications (embedded systems, games)
+
+### Why no review exceptions / rule accumulation
+
+We deliberately do not support accumulating review exceptions or custom rules in knowledge.md. AI judgment of such lists degrades at scale — this is a known failure pattern across AI coding tools. Only ast-grep patterns (programmatic execution, not AI judgment) are stored as knowledge.
 
 ## Templates
 

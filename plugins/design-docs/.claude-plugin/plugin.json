@@ -1,10 +1,28 @@
 {
   "name": "design-docs",
-  "description": "Auto-generate and sync design documents from source code using code-review-graph and ast-grep",
   "version": "1.0.0",
+  "description": "Auto-generate and sync design documents from web application source code. Pattern-driven (framework-agnostic) using code-review-graph and ast-grep.",
   "author": {
-    "name": "shumatsumonobu"
+    "name": "shumatsumonobu",
+    "url": "https://github.com/shumatsumonobu"
   },
+  "homepage": "https://github.com/shumatsumonobu/dotagents",
   "repository": "https://github.com/shumatsumonobu/dotagents",
-  "license": "MIT"
+  "license": "MIT",
+  "keywords": [
+    "design-docs",
+    "documentation",
+    "ast-grep",
+    "code-review-graph",
+    "pattern-driven",
+    "framework-agnostic",
+    "web-application"
+  ],
+  "skills": [
+    "./skills/init/SKILL.md",
+    "./skills/generate/SKILL.md",
+    "./skills/sync/SKILL.md",
+    "./skills/review/SKILL.md",
+    "./skills/explain/SKILL.md"
+  ]
 }

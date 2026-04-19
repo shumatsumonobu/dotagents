@@ -3,13 +3,24 @@
 ## 現在の状態
 
 - リポジトリ名変更 (`claude` → `dotagents`) 完了
-- **design-docs プラグイン v1.0.0 実装完了** — `plugins/design-docs/` に全ファイル配置済み。実行テスト未実施
+- **design-docs プラグイン v1.0.0** — パターン駆動設計に再構築、実行テスト未実施
+  - `design-docs.knowledge.md` を導入（プロジェクト固有 ast-grep パターンを init で推論→保存）
+  - フレームワークハードコードを廃止（framework-agnostic）
+  - review を exact（✓）/approximate（≈）に分類
+  - sync に ast-grep diff（新規/削除エンドポイント検出）追加
 
-## 今やっていること
+## 次にやること（手動作業）
 
-- design-docs プラグインの実行テスト
-  - `claude --plugin-dir ./plugins/design-docs` でロードして `/design-docs:init` → `/design-docs:generate` の流れを通す
-  - テスト用プロジェクト: `plugins/design-docs/examples/todo-app/`
+- [ ] design-docs プラグインの実行テスト
+  1. テスト用プロジェクトを準備: `../todo-app/`（shumatsumonobu 直下、dotagents の外）で `git init && npm install`
+  2. プラグインをロード: `claude --plugin-dir ./plugins/design-docs`
+  3. `/design-docs:init` を実行 → 5 Phase フロー（ヒアリング → サンプル確認 → パターン推論 → マッチ結果確認 → 保存）が動作するか、config.md + knowledge.md が生成されるか
+  4. `/design-docs:generate todos-api.md` → knowledge.md のパターンを使って API 設計書が生成されるか
+  5. `/design-docs:generate dashboard.md` → 画面設計書+ワイヤーフレームが生成されるか
+  6. コードを変更して `/design-docs:sync todos-api.md` → ast-grep diff で新規エンドポイントが検出されるか、更新提案が出るか
+  7. `/design-docs:review todos-api.md` → ✓/≈ 分類のチェックリストが出力されるか
+  8. `/design-docs:explain TODOのCRUDはどう動く？` → 設計書+ソースから回答されるか
+- [ ] テスト結果に基づいてSKILL.mdを修正（必要であれば）
 
 ## 保留中の作業
 

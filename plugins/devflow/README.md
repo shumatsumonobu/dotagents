@@ -1,3 +1,5 @@
+[English](README.md) | [日本語](README.ja.md)
+
 # DevFlow
 
 Just say what you want to build. Design, tests, README — done.
