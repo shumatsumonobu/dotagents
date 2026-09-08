@@ -1,0 +1,40 @@
+{
+  "name": "dotagents",
+  "owner": {
+    "name": "shumatsumonobu",
+    "email": "shumatsumonobu@gmail.com"
+  },
+  "metadata": {
+    "description": "Agents, unchained."
+  },
+  "plugins": [
+    {
+      "name": "devflow",
+      "source": "./plugins/devflow",
+      "description": "PM-driven development workflow with 6 specialized agents (explorer, planner, coder, tester, reviewer, documenter)",
+      "category": "development",
+      "tags": [
+        "agents",
+        "workflow",
+        "automation",
+        "multi-language",
+        "testing",
+        "review"
+      ]
+    },
+    {
+      "name": "design-docs",
+      "source": "./plugins/design-docs",
+      "description": "Auto-generate and sync design documents from web application source code. Pattern-driven (framework-agnostic) using code-review-graph and ast-grep.",
+      "category": "documentation",
+      "tags": [
+        "design-docs",
+        "documentation",
+        "ast-grep",
+        "code-review-graph",
+        "pattern-driven",
+        "framework-agnostic"
+      ]
+    }
+  ]
+}

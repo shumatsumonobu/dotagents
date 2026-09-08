@@ -1,0 +1,38 @@
+{
+  "name": "devflow",
+  "description": "PM-driven development workflow with 6 specialized agents (explorer, planner, coder, tester, reviewer, documenter). Supports TypeScript/Python/Go/Rust.",
+  "author": {
+    "name": "shumatsumonobu",
+    "url": "https://github.com/shumatsumonobu"
+  },
+  "homepage": "https://github.com/shumatsumonobu/dotagents",
+  "repository": "https://github.com/shumatsumonobu/dotagents",
+  "license": "MIT",
+  "keywords": [
+    "agents",
+    "development",
+    "automation",
+    "testing",
+    "review",
+    "documentation",
+    "multi-language"
+  ],
+  "agents": [
+    "./agents/explorer.md",
+    "./agents/planner.md",
+    "./agents/coder.md",
+    "./agents/tester.md",
+    "./agents/reviewer.md",
+    "./agents/documenter.md"
+  ],
+  "commands": [
+    "./commands/dev.md",
+    "./commands/explore.md",
+    "./commands/history.md",
+    "./commands/design.md",
+    "./commands/review.md",
+    "./commands/test.md",
+    "./commands/docs.md"
+  ],
+  "hooks": "./hooks/hooks.json"
+}

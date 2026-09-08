@@ -1,0 +1,8 @@
+{
+  "name": "design-docs-scripts",
+  "version": "1.0.0",
+  "description": "Playwright screenshot scripts for design-docs plugin",
+  "dependencies": {
+    "playwright": "^1.48.0"
+  }
+}
